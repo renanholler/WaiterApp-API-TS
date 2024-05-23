@@ -1,3 +1,9 @@
 node_modules
-src
 dist
+*.log
+Dockerfile
+docker-compose.yml
+.dockerignore
+.git
+.gitignore
+.env
