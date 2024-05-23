@@ -1,9 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { router } from './router';
-import path from 'node:path';
 import http from 'node:http';
+import path from 'node:path';
 import { Server } from 'socket.io';
+import { router } from './router';
 
 const app = express();
 const server = http.createServer(app);
