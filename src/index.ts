@@ -4,8 +4,8 @@ import http from 'node:http';
 import path from 'node:path';
 import { Server } from 'socket.io';
 import { router } from './router';
+import { app } from './app';
 
-const app = express();
 const server = http.createServer(app);
 export const io = new Server(server);
 
