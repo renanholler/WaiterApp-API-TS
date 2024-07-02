@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { Order } from '../../models/Order';
 import { OrderService } from '../../service/order/OrderService'
 
 export class OrderController {
@@ -14,6 +13,8 @@ export class OrderController {
     try {
       const { table, products } = req.body;
   
+      this.validaCreate(table, products);
+
       const order = await this.service.create({ table, products });
   
       return res.status(201).json(order);
@@ -21,8 +22,7 @@ export class OrderController {
       console.error(error);
       return res.status(500).send({message : error.message});
     }
-  }
-  
+  }  
 
   public async cancelOrder(req: Request, res: Response) {
     try {
@@ -63,6 +63,18 @@ export class OrderController {
     } catch(error) {
       console.error(error);
       res.sendStatus(500);
+    }
+  }
+
+  private validaCreate(table: String, products: any[]) {
+    //CT02
+    if(Number(table) < 0) {
+      throw new Error("Mesa inválida");
+    }
+
+    //CT03
+    if(products.length == 0 || products[0].product.name == '') {
+      throw new Error("Produto inválido");
     }
   }
 

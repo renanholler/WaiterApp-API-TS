@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { OrderService } from '../../app/service/order/OrderService';
 
 
-jest.mock('../app/service/order/OrderService', () => {
+jest.mock('../../app/service/order/OrderService', () => {
   return {
     OrderService: jest.fn().mockImplementation(() => {
       return {
@@ -39,11 +39,10 @@ describe('OrdersController', () => {
   */
   it('Verificar se o sistema rejeita pedidos com quantidade inválida.', async () => {
     // Dados de entrada inválidos
-    req.body = { produto: 'Pizza', quantidade: -1, mesa: 1 };
+    req.body = { table: 1, products: [{product: {name: 'Pizza'}, quantity: -1}] };
 
     // Simulando o comportamento do serviço para esse caso
-    const error = new Error('Invalid quantity');
-    (orderService.create as jest.Mock).mockRejectedValue(error);
+    (orderService.create as jest.Mock).mockReturnValue({})
 
     // Chamar o método do controlador
     await ordersController.createOrder(req as Request, res as Response);
@@ -58,6 +57,15 @@ describe('OrdersController', () => {
    * RT03
    */
   it('Verificar se o sistema rejeita pedidos sem produto especificado.', async () => {
-    
+    //Arrange
+    req.body = { produto: "", quantidade: 1, mesa: 1};
+    //Mockado para não retornar nada pois a validação será feita no controller
+    (orderService.create as jest.Mock).mockReturnValue({})
+
+
+
+
   });
+
+
 });
