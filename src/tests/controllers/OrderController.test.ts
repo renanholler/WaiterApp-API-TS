@@ -23,8 +23,8 @@ describe('OrdersController', () => {
   let res: Partial<Response>;
 
   beforeEach(() => {
-    orderService = new OrderService(); // Mock the OrderService
-    ordersController = new OrderController(orderService); // Pass the mocked service to the controller
+    orderService = new OrderService(); 
+    ordersController = new OrderController(orderService); 
     req = {};
     res = {
       status: jest.fn().mockReturnThis(),
@@ -144,6 +144,5 @@ describe('OrdersController', () => {
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.send).toHaveBeenCalledWith({message: 'Mesa inválida'});
   });
-
 
 });

@@ -19,7 +19,7 @@ export class OrderController {
 
       return res.status(201).json(order);
     } catch(error : any) {
-      console.error(error);
+      // console.error(error);
       return res.status(500).send({message : error.message});
     }
   }
@@ -32,7 +32,7 @@ export class OrderController {
 
       res.status(204);
     } catch(error) {
-      console.error(error);
+      // console.error(error);
       res.status(500);
     }
   }
@@ -42,7 +42,7 @@ export class OrderController {
       const orders = await this.service.find();
       res.json(orders);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       res.status(500);
     }
   }
@@ -62,7 +62,7 @@ export class OrderController {
       const order = await this.service.updateById(orderId, status);
       res.status(204).send(order);
     } catch(error) {
-      console.error(error);
+      // console.error(error);
       res.status(500);
     }
   }
@@ -96,8 +96,6 @@ export class OrderController {
     if(Number(table) <= 0) {
       throw new Error('Mesa inválida');
     }
-
-
   }
 
 }
