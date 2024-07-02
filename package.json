@@ -7,6 +7,7 @@
     "build": "tsc",
     "dev": "nodemon src/index.ts",
     "start": "node dist",
+    "pretest": "rm -rf dist",
     "test": "jest",
     "script": "ts-node src/app/scripts/"
   },
