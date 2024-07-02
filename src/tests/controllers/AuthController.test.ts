@@ -66,5 +66,24 @@ describe('AuthController', () => {
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({ error: 'Invalid credentials' });
     });
+
+    it('should not login with invalid email format', async () => {
+      const req = {
+        body: {
+          email: 'teste',
+          senha: '123',
+        },
+      } as Request;
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      } as unknown as Response;
+
+      await AuthController.login(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: 'Invalid email format' });
+    });
   });
 });
