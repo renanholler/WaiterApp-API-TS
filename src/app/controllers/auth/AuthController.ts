@@ -7,6 +7,12 @@ class AuthController {
   static async login(req: Request, res: Response) {
     const { email, senha } = req.body;
 
+    // Validação de formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
     try {
       const user = await User.findOne({ email });
       if (!user) {
