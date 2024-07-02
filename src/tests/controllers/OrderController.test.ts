@@ -70,5 +70,20 @@ describe('OrdersController', () => {
     expect(res.send).toHaveBeenCalledWith({message : 'Produto inválido'});
   });
 
+  /**
+   * RT05
+   */
+  it('Verificar se o sistema rejeita status não existente.', async () => {
+    //Arrange
+    req.body = { status: 'ORDER2' };
+    req.params = { orderId : '1' };
+    (orderService.updateById as jest.Mock).mockReturnValue({});
+    //Act
+    await ordersController.changeOrderStatus(req as Request, res as Response);
+    //Assert
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.send).toHaveBeenCalledWith({message : 'Status should be one of these: WAITING, IN_PRODUCTION, DONE'});
+  });
+
 
 });

@@ -30,10 +30,10 @@ export class OrderController {
 
       await this.service.deleteById(orderId);
 
-      res.sendStatus(204);
+      res.status(204);
     } catch(error) {
       console.error(error);
-      res.sendStatus(500);
+      res.status(500);
     }
   }
 
@@ -43,7 +43,7 @@ export class OrderController {
       res.json(orders);
     } catch (error) {
       console.error(error);
-      res.sendStatus(500);
+      res.status(500);
     }
   }
   
@@ -52,17 +52,18 @@ export class OrderController {
       const { orderId } = req.params;
       const { status } = req.body;
   
+      //RT05
       if (!['WAITING', 'IN_PRODUCTION', 'DONE'].includes(status)) {
-        return res.status(400).json({
-          error: 'Status should be one of these: WAITING, IN_PRODUCTION, DONE'
+        return res.status(500).send({
+          message: 'Status should be one of these: WAITING, IN_PRODUCTION, DONE'
         });
       }
   
       await this.service.updateById(orderId, status);
-      res.sendStatus(204);
+      res.status(204);
     } catch(error) {
       console.error(error);
-      res.sendStatus(500);
+      res.status(500);
     }
   }
 
