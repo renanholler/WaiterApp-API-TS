@@ -5,7 +5,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { Server } from 'socket.io';
 import { app } from './app';
-import { router } from './router';
+import router from './router';
 
 dotenv.config();
 const server = http.createServer(app);

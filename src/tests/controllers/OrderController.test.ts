@@ -111,8 +111,8 @@ describe('OrdersController', () => {
     //Assert
     expect(res.status).toHaveBeenCalledWith(204);
     expect(res.send).toHaveBeenCalledWith(orderResponse);
-  })
- 
+  });
+
   /**
    * RT12
    */
@@ -142,8 +142,8 @@ describe('OrdersController', () => {
 
     //Assert
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.send).toHaveBeenCalledWith({message: "Mesa inválida"});
-  })
+    expect(res.send).toHaveBeenCalledWith({message: 'Mesa inválida'});
+  });
 
 
 });

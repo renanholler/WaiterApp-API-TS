@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { OrderService } from '../../service/order/OrderService'
+import { OrderService } from '../../service/order/OrderService';
 
 export class OrderController {
 
@@ -12,17 +12,17 @@ export class OrderController {
   public async createOrder(req: Request, res: Response) {
     try {
       const { table, products } = req.body;
-  
+
       this.validaCreate(table, products);
 
       const order = await this.service.create({ table, products });
-  
+
       return res.status(201).json(order);
     } catch(error : any) {
       console.error(error);
       return res.status(500).send({message : error.message});
     }
-  }  
+  }
 
   public async cancelOrder(req: Request, res: Response) {
     try {
@@ -46,19 +46,19 @@ export class OrderController {
       res.status(500);
     }
   }
-  
+
   public async changeOrderStatus(req: Request, res: Response) {
     try {
       const { orderId } = req.params;
       const { status } = req.body;
-  
+
       //RT05
       if (!['WAITING', 'IN_PRODUCTION', 'DONE'].includes(status)) {
         return res.status(500).send({
           message: 'Status should be one of these: WAITING, IN_PRODUCTION, DONE'
         });
       }
-  
+
       const order = await this.service.updateById(orderId, status);
       res.status(204).send(order);
     } catch(error) {
@@ -67,7 +67,7 @@ export class OrderController {
     }
   }
 
-  private validaCreate(table: String, products: any[]) {
+  private validaCreate(table: string, products: any[]) {
     //CT02
     let invalidQtt = false;
     products.forEach(product => {
@@ -77,7 +77,7 @@ export class OrderController {
     });
 
     if(invalidQtt) {
-      throw new Error("Quantidade inválida");
+      throw new Error('Quantidade inválida');
     }
 
     //CT03
@@ -89,12 +89,12 @@ export class OrderController {
     });
 
     if(invalidName) {
-      throw new Error("Produto inválido");
+      throw new Error('Produto inválido');
     }
-    
+
     //CT13
     if(Number(table) <= 0) {
-      throw new Error("Mesa inválida");
+      throw new Error('Mesa inválida');
     }
 
 

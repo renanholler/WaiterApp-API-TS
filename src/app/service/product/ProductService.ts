@@ -1,5 +1,3 @@
-
-
 import { Product } from '../../models/Product';
 
 export class ProductService {
@@ -7,7 +5,7 @@ export class ProductService {
   public async updateById(orderId: string, status: any) {
     return await Product.findByIdAndUpdate(orderId, { status });
   }
-  
+
   public async find() {
     return await Product.find();
   }
