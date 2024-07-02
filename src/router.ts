@@ -3,19 +3,16 @@ import path from 'node:path';
 import { Router } from 'express';
 import multer from 'multer';
 
-import { listCategories } from './app/useCases/categories/listCategories';
-import { createCategory } from './app/useCases/categories/createCategory';
-import { listProducts } from './app/useCases/products/listProducts';
-import { createProduct } from './app/useCases/products/createProduct';
-import { listProductsByCategory } from './app/useCases/categories/listProductsByCategory';
-import { listOrders } from './app/useCases/orders/listOrders';
-import { createOrder } from './app/useCases/orders/createOrder';
-import { changeOrderStatus } from './app/useCases/orders/changeOrderStatus';
-import { cancelOrder } from './app/useCases/orders/cancelOrder';
-import { deleteCategory } from './app/useCases/categories/deleteCategory';
-
+import { ProductController } from './app/controllers/product/ProductController';
+import { CategoryController } from './app/controllers/category/CategoryController';
+import { OrderController } from './app/controllers/order/OrderController';
 
 export const router = Router();
+
+
+const productController = new ProductController();
+const categoryController = new CategoryController();
+const orderController = new OrderController();
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -29,32 +26,32 @@ const upload = multer({
 });
 
 
-// List categories
-router.get('/categories', listCategories);
-
-// Create category
-router.post('/categories', createCategory);
-
-// Delete category
-router.delete('/categories/:categoryId', deleteCategory);
-
 // List products
-router.get('/products', listProducts);
+router.get('/products', productController.listProducts);
 
 // Create product
-router.post('/products', upload.single('image'), createProduct);
+router.post('/products', upload.single('image'), productController.createProduct);
+
+// List categories
+router.get('/categories', categoryController.listCategories);
+
+// Create category
+router.post('/categories', categoryController.createCategory);
+
+// Delete category
+router.delete('/categories/:categoryId', categoryController.deleteCategory);
 
 // Get products by category
-router.get('/categories/:categoryId/products', listProductsByCategory);
+router.get('/categories/:categoryId/products', categoryController.listProductsByCategory);
 
 // List orders
-router.get('/orders', listOrders);
+router.get('/orders', orderController.listOrders);
 
 // Create order
-router.post('/orders', createOrder);
+router.post('/orders', orderController.createOrder);
 
 // Change order status
-router.patch('/orders/:orderId', changeOrderStatus);
+router.patch('/orders/:orderId', orderController.changeOrderStatus);
 
 // Delete/Cancel order
-router.delete('/orders/:orderId', cancelOrder);
+router.delete('/orders/:orderId', orderController.cancelOrder);
