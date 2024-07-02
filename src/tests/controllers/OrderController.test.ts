@@ -1,6 +1,6 @@
-import { OrderController } from '../app/controllers/order/OrderController';
+import { OrderController } from '../../app/controllers/order/OrderController';
 import { Request, Response } from 'express';
-import { OrderService } from '../app/service/order/OrderService';
+import { OrderService } from '../../app/service/order/OrderService';
 
 
 jest.mock('../app/service/order/OrderService', () => {
@@ -33,7 +33,11 @@ describe('OrdersController', () => {
     };
   });
 
-  it('should reject order with invalid quantity', async () => {
+  
+ /**
+  * RT02
+  */
+  it('Verificar se o sistema rejeita pedidos com quantidade inválida.', async () => {
     // Dados de entrada inválidos
     req.body = { produto: 'Pizza', quantidade: -1, mesa: 1 };
 
@@ -48,5 +52,12 @@ describe('OrdersController', () => {
     expect(res.status).toHaveBeenCalledWith(500);
     // Verificar se a mensagem de erro foi retornada
     expect(res.send).toHaveBeenCalledWith({message : 'Invalid quantity'});
+  });
+
+  /**
+   * RT03
+   */
+  it('Verificar se o sistema rejeita pedidos sem produto especificado.', async () => {
+    
   });
 });
