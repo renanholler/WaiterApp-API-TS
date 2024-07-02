@@ -50,7 +50,7 @@ describe('OrdersController', () => {
     // Verificar se o código de status 500 foi retornado
     expect(res.status).toHaveBeenCalledWith(500);
     // Verificar se a mensagem de erro foi retornada
-    expect(res.send).toHaveBeenCalledWith({message : 'Invalid quantity'});
+    expect(res.send).toHaveBeenCalledWith({message : 'Quantidade inválida'});
   });
 
   /**
@@ -58,13 +58,16 @@ describe('OrdersController', () => {
    */
   it('Verificar se o sistema rejeita pedidos sem produto especificado.', async () => {
     //Arrange
-    req.body = { produto: "", quantidade: 1, mesa: 1};
+    req.body = { table: 1, products: [{product: {name: ''}, quantity: 1}] };
     //Mockado para não retornar nada pois a validação será feita no controller
     (orderService.create as jest.Mock).mockReturnValue({})
+    
+    //Act
+    await ordersController.createOrder(req as Request, res as Response);
 
-
-
-
+    //Assert
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.send).toHaveBeenCalledWith({message : 'Produto inválido'});
   });
 
 

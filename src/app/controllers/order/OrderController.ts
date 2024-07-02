@@ -68,12 +68,26 @@ export class OrderController {
 
   private validaCreate(table: String, products: any[]) {
     //CT02
-    if(Number(table) < 0) {
-      throw new Error("Mesa inválida");
+    let invalidQtt = false;
+    products.forEach(product => {
+      if(product.quantity <= 0) {
+        invalidQtt = true;
+      }
+    });
+
+    if(invalidQtt) {
+      throw new Error("Quantidade inválida");
     }
 
     //CT03
-    if(products.length == 0 || products[0].product.name == '') {
+    let invalidName = false;
+    products.forEach(product => {
+      if(product.product.name == '') {
+        invalidName = true;
+      }
+    });
+
+    if(invalidName) {
       throw new Error("Produto inválido");
     }
   }
