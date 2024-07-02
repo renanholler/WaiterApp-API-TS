@@ -91,6 +91,13 @@ export class OrderController {
     if(invalidName) {
       throw new Error("Produto inválido");
     }
+    
+    //CT13
+    if(Number(table) <= 0) {
+      throw new Error("Mesa inválida");
+    }
+
+
   }
 
 }

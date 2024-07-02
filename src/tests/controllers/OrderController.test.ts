@@ -129,4 +129,21 @@ describe('OrdersController', () => {
     expect(res.json).toHaveBeenCalledWith({});
   });
 
+  /**
+   * RT13
+   */
+  it('Verificar se o sistema rejeita mesa inválida', async () => {
+    //Arrange
+    req.body = { table: -1, products: [{product: {name: 'Pizza'}, quantity: 1}] };
+    (orderService.create as jest.Mock).mockReturnValue({});
+
+    //Act
+    await ordersController.createOrder(req as Request, res as Response);
+
+    //Assert
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.send).toHaveBeenCalledWith({message: "Mesa inválida"});
+  })
+
+
 });
