@@ -16,10 +16,10 @@ export class OrderController {
   
       const order = await this.service.create({ table, products });
   
-      res.status(201).json(order);
-    } catch(error) {
+      return res.status(201).json(order);
+    } catch(error : any) {
       console.error(error);
-      res.sendStatus(500);
+      return res.status(500).send({message : error.message});
     }
   }
   
