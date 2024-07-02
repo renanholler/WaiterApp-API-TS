@@ -59,8 +59,8 @@ export class OrderController {
         });
       }
   
-      await this.service.updateById(orderId, status);
-      res.status(204);
+      const order = await this.service.updateById(orderId, status);
+      res.status(204).send(order);
     } catch(error) {
       console.error(error);
       res.status(500);

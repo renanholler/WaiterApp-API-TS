@@ -85,5 +85,48 @@ describe('OrdersController', () => {
     expect(res.send).toHaveBeenCalledWith({message : 'Status should be one of these: WAITING, IN_PRODUCTION, DONE'});
   });
 
+  /**
+   * RT07
+   */
+  it('Verificar o comportamento do sistema quando não há pedidos cadastrados', async () => {
+    //Arrange
+    (orderService.find as jest.Mock).mockReturnValue({});
+    //Act
+    await ordersController.listOrders(req as Request, res as Response);
+    //Assert
+    expect(res.json).toHaveBeenCalledWith({});
+  });
+
+  /**
+   * RT10
+   */
+  it('Verificar se o status de um pedido pode ser alterado corretamente', async () => {
+    //Arrange
+    req.body = { status: 'DONE' };
+    req.params = { orderId : '1' };
+    const orderResponse = {id: 1, table: 1, status: 'DONE' };
+    (orderService.updateById as jest.Mock).mockReturnValue(orderResponse);
+    //Act
+    await ordersController.changeOrderStatus(req as Request, res as Response);
+    //Assert
+    expect(res.status).toHaveBeenCalledWith(204);
+    expect(res.send).toHaveBeenCalledWith(orderResponse);
+  })
+ 
+  /**
+   * RT12
+   */
+  it('Verificar se um pedido pode ser atribuido a uma mesa com valor válido', async ()=>{
+    //Arrange
+    req.body = { table: 1, products: [{product: {name: 'Pizza'}, quantity: 1}] };
+    (orderService.create as jest.Mock).mockReturnValue({});
+
+    //Act
+    await ordersController.createOrder(req as Request, res as Response);
+
+    //Assert
+    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.json).toHaveBeenCalledWith({});
+  });
 
 });
