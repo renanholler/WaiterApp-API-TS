@@ -4,15 +4,14 @@ import { Product } from '../../models/Product';
 
 export class CategoryService {
 
-
   public async listProductByCategory(categoryId: string) {
-    await Product.find().where('category').equals(categoryId);
+    return await Product.find().where('category').equals(categoryId);
   }
 
   public async updateById(orderId: string, status: any) {
     return await Category.findByIdAndUpdate(orderId, { status });
   }
-  
+
   public async find() {
     return await Category.find();
   }

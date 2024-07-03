@@ -27,13 +27,16 @@ export class OrderController {
   public async cancelOrder(req: Request, res: Response) {
     try {
       const { orderId } = req.params;
+      console.log(`Cancelando pedido com ID: ${orderId}`);
 
       await this.service.deleteById(orderId);
 
-      res.status(204);
-    } catch(error) {
-      // console.error(error);
-      res.status(500);
+      console.log(`Pedido com ID: ${orderId} cancelado com sucesso.`);
+      res.status(200).send({ message: 'Pedido cancelado com sucesso' });
+    } catch (error) {
+      const { orderId } = req.params;
+      console.error(`Erro ao cancelar o pedido com ID: ${orderId}`, error);
+      res.status(500).send({ message: 'Internal Server Error' });
     }
   }
 
