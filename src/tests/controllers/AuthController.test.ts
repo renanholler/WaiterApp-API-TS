@@ -22,6 +22,57 @@ describe('AuthController', () => {
   });
 
   /**
+   * RT18
+   */
+  it('should login with valid credentials', async () => {
+    // Arrange
+    req.body = {
+      email: 'batata@teste.com',
+      senha: '12345',
+    };
+
+    const user = {
+      _id: '1',
+      email: 'batata@teste.com',
+      senha: 'hashedPassword',
+    };
+
+    (User.findOne as jest.Mock).mockResolvedValue(user);
+    (bcrypt.compare as jest.Mock).mockResolvedValue(true);
+    (jwt.sign as jest.Mock).mockReturnValue('token');
+
+    // Act
+    await AuthController.login(req as Request, res as Response);
+
+    // Assert
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({
+      token: 'token',
+      user: {
+        _id: user._id,
+        email: user.email,
+      },
+    });
+  });
+
+  it('should not login with invalid email', async () => {
+    // Arrange
+    req.body = {
+      email: 'invalid@teste.com',
+      senha: '12345',
+    };
+
+    (User.findOne as jest.Mock).mockResolvedValue(null);
+
+    // Act
+    await AuthController.login(req as Request, res as Response);
+
+    // Assert
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Invalid credentials' });
+  });
+
+  /**
    * RT19
    */
   it('should not login with invalid email format', async () => {
@@ -118,53 +169,5 @@ describe('AuthController', () => {
     // Assert
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({ error: 'Password is too short' });
-  });
-
-  it('should login with valid credentials', async () => {
-    // Arrange
-    req.body = {
-      email: 'batata@teste.com',
-      senha: '12345',
-    };
-
-    const user = {
-      _id: '1',
-      email: 'batata@teste.com',
-      senha: 'hashedPassword',
-    };
-
-    (User.findOne as jest.Mock).mockResolvedValue(user);
-    (bcrypt.compare as jest.Mock).mockResolvedValue(true);
-    (jwt.sign as jest.Mock).mockReturnValue('token');
-
-    // Act
-    await AuthController.login(req as Request, res as Response);
-
-    // Assert
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({
-      token: 'token',
-      user: {
-        _id: '1',
-        email: 'batata@teste.com',
-      },
-    });
-  });
-
-  it('should not login with invalid email', async () => {
-    // Arrange
-    req.body = {
-      email: 'invalid@teste.com',
-      senha: '12345',
-    };
-
-    (User.findOne as jest.Mock).mockResolvedValue(null);
-
-    // Act
-    await AuthController.login(req as Request, res as Response);
-
-    // Assert
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Invalid credentials' });
   });
 });
