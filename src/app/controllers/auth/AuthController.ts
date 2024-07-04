@@ -7,10 +7,19 @@ class AuthController {
   static async login(req: Request, res: Response) {
     const { email, senha } = req.body;
 
+    if (!email || !senha) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
     // Validação de formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    // Verificação de senha curta
+    if (senha.length < 5) {
+      return res.status(400).json({ error: 'Password is too short' });
     }
 
     try {
